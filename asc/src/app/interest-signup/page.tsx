@@ -6,7 +6,7 @@ import MentorField from '@/components/signup/MentorField';
 import LearnerField from '@/components/signup/LearnerField';
 import EmailField from '@/components/signup/EmailField';
 import PrivacyCheckbox from '@/components/signup/PrivacyCheckbox';
-import SubmitButton from '@/components/signup/SubmitButton';
+import SubmitButton from '@/components/ui/SubmitButton';
 import { supabase } from '@/lib/supabaseClient';
 import { ModeToggle } from '@/components/ui/ThemeToggle';
 import LanguageToggle from '@/components/ui/LanguageToggle';

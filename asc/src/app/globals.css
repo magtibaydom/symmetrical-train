@@ -112,6 +112,15 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@theme {
+  --color-white: #FFF8F0; /* Light Cream */
+  --color-orange: #FF8811; /* Orange */
+  --color-yellow: #F4D06F; /* Yellow */
+  --color-teal: #9DD9D2; /* Soft Teal */
+  --color-purple: #392F5A; /* Deep Purple */
+  --color-black: #000000; /* Black or Dark Color if needed */
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

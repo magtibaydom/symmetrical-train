@@ -1,0 +1,13 @@
+{
+    "interest.question.learner": "Anong gusto mong matutunan?",
+    "interest.placeholder.learner": "Gusto kong matutunan",
+    "interest.question.mentor": "Anong gusto mong ituro?",
+    "interest.placeholder.mentor": "Gusto kong ituro",
+    "interest.privacy.label": "Sumasang-ayon ako sa privacy policy",
+    "interest.role-btn.mentor": "Para sa Mentors",
+    "interest.role-btn.learner": "Para sa Learners",
+    "interest.submit-btn": "I-submit",
+    "interest.email.valid": "Maglagay ng valid na email addresss",
+    "interest.text.description": "Sabay-sabay tayong matuto. Walang assignment dito!",
+    "ui.label.charcountlimit": "Oops, tama na type."
+  }

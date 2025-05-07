@@ -1,0 +1,13 @@
+{
+    "interest.question.learner": "What do you want to learn?",
+    "interest.placeholder.learner": "I want to learn",
+    "interest.question.mentor": "What do you want to teach?",
+    "interest.placeholder.mentor": "I want to teach",
+    "interest.privacy.label": "I agree to the privacy policy",
+    "interest.role-btn.mentor": "For Mentors",
+    "interest.role-btn.learner": "For Learners",
+    "interest.submit-btn": "Submit",
+    "interest.email.valid": "Please enter a valid email address.",
+    "interest.text.description": "Let's figure it out together. No homeworks!",
+    "ui.label.charcountlimit": "Character limit reached!"
+  }
