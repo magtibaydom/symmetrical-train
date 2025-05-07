@@ -43,4 +43,5 @@ next-env.d.ts
 # local env
 .env.local
 
-service-account.json:1
+asc/service-account.json
+
