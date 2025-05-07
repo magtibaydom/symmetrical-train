@@ -85,39 +85,40 @@ export default function UploadForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Label htmlFor="nickname">Nickname</Label>
-        <Input id="nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} required />
+        <Input id="nickname" className="mt-2" value={nickname} onChange={(e) => setNickname(e.target.value)} required />
       </div>
 
       <div>
         <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <Input type="email" id="email" className="mt-2" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </div>
 
       <div>
         <Label htmlFor="discordId">Discord ID (optional)</Label>
-        <Input id="discordId" value={discordId} onChange={(e) => setDiscordId(e.target.value)} />
+        <Input id="discordId" value={discordId} className="mt-2" onChange={(e) => setDiscordId(e.target.value)} />
       </div>
 
       <div>
-        <Label htmlFor="preferredFeedback">Preferred Additional Feedback</Label>
-        <Select onValueChange={(value) => setPreferredFeedback(value)} defaultValue="email">
-          <SelectTrigger>
+        <Label htmlFor="preferredFeedback" >Preferred Additional Feedback</Label>
+        <Select onValueChange={(value) => setPreferredFeedback(value)} defaultValue="email" >
+          <SelectTrigger className="mt-2">
             <SelectValue placeholder="Select feedback method" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent >
             <SelectItem value="email">Email only</SelectItem>
-            <SelectItem value="discord">Email + Discord Call</SelectItem>
-            <SelectItem value="gmeet">Email + Google Meet</SelectItem>
+            <SelectItem value="discord" disabled={!discordId.trim()}>
+              Email + Discord Call
+            </SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Discord and Google Meet options are subject to mentor&apos;s availability — but we&apos;ll try our best to make it happen!
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+          Discord call feedback is subject to mentor&apos;s availability — but we&apos;ll try our best to make it happen!
         </p>
       </div>
 
       <div>
-        <Label htmlFor="file">Upload Resume (.pdf, .doc, .docx)</Label>
-        <Input type="file" id="file" accept=".pdf,.doc,.docx" onChange={(e) => setFile(e.target.files?.[0] || null)} required />
+        <Label htmlFor="file" >Upload Resume (.pdf, .doc, .docx)</Label>
+        <Input type="file" id="file" accept=".pdf,.doc,.docx" onChange={(e) => setFile(e.target.files?.[0] || null)} required className="mt-2"/>
       </div>
 
       <div className="text-sm text-gray-600 dark:text-gray-400">
