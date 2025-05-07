@@ -1,13 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 import { ModeToggle } from '@/components/ui/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { useSession } from '@/components/SessionProvider'; // ✅ import session hook
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabaseClient';
 
 export default function Navbar() {
-  const [isAuthenticated] = useState(false); // TODO: replace with real auth
+  const session = useSession(); // ✅ get session from context
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+  };
 
   return (
     <nav className="flex items-center justify-between px-6 py-4 shadow-md bg-background">
@@ -21,27 +30,24 @@ export default function Navbar() {
         <Link href="/resume-review">
           <Button variant="ghost">Resume Review</Button>
         </Link>
-        {/* Future tools: just uncomment when ready */}
-        {/* <Link href="/calendar">
-          <Button variant="ghost">Calendar</Button>
-        </Link>
-        <Link href="/doc-to-deck">
-          <Button variant="ghost">Doc to Deck</Button>
-        </Link> */}
       </div>
 
       {/* Right-side controls */}
       <div className="flex items-center space-x-4">
         <ModeToggle />
-        {isAuthenticated ? (
+        {session?.user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost">Account</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/profile">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/settings">Settings</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
