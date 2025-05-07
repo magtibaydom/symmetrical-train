@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { Readable } from 'stream';
+import { supabase } from '@/lib/supabaseClient';
 
 export const runtime = 'nodejs';
 
@@ -8,7 +9,6 @@ const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
 const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, '\n');
-
 
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -22,11 +22,6 @@ const drive = google.drive({ version: 'v3', auth });
 
 export async function POST(req: Request) {
   console.log('🚀 API hit!');
-
-  // Log env vars
-  console.log('🔑 folderId:', folderId);
-  console.log('🔑 clientEmail:', clientEmail);
-  console.log('🔑 privateKey length:', privateKey?.length);
 
   if (!folderId || !clientEmail || !privateKey) {
     console.error('❌ Missing Google API environment variables');
@@ -45,6 +40,7 @@ export async function POST(req: Request) {
     const nickname = formData.get('nickname') as string;
     const email = formData.get('email') as string;
     const discordId = formData.get('discordId') as string;
+    const preferredFeedback = formData.get('preferredFeedback') as string;
     const file = formData.get('file') as File;
 
     if (!nickname || !email || !file) {
@@ -69,12 +65,15 @@ export async function POST(req: Request) {
     try {
       buffer = Buffer.from(await file.arrayBuffer());
       console.log(`✅ File buffer size: ${buffer.length} bytes`);
-    } catch (err) {
-      console.error('❌ Failed to convert file to buffer:', err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('❌ Failed to convert file to buffer:', err.message);
+      } else {
+        console.error('❌ Failed to convert file to buffer:', err);
+      }
       return NextResponse.json({ error: 'Failed to process file' }, { status: 500 });
     }
 
-    // Optional file size check (max 5MB)
     const MAX_SIZE = 5 * 1024 * 1024;
     if (buffer.length > MAX_SIZE) {
       console.error('❌ File too large');
@@ -97,8 +96,12 @@ export async function POST(req: Request) {
         fields: 'id, webViewLink',
       });
       fileData = uploadRes.data;
-    } catch (err: any) {
-      console.error('❌ Google Drive upload error:', err.message, err.response?.data);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('❌ Google Drive upload error:', err.message);
+      } else {
+        console.error('❌ Google Drive upload error:', err);
+      }
       return NextResponse.json({ error: 'Google Drive upload failed' }, { status: 500 });
     }
 
@@ -112,17 +115,43 @@ export async function POST(req: Request) {
         fileId: fileData.id,
         requestBody: { role: 'reader', type: 'anyone' },
       });
-    } catch (err: any) {
-      console.error('❌ Failed to set file permissions:', err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error('❌ Failed to set file permissions:', err.message);
+      } else {
+        console.error('❌ Failed to set file permissions:', err);
+      }
       return NextResponse.json({ error: 'Failed to set file permissions' }, { status: 500 });
     }
 
     const fileUrl = fileData.webViewLink;
     console.log(`✅ File uploaded: ${fileUrl}`);
 
-    return NextResponse.json({ success: true, fileUrl });
-  } catch (err: any) {
-    console.error('❌ Upload error:', err.message);
-    return NextResponse.json({ error: err.message || 'Upload failed' }, { status: 500 });
+    const { data, error } = await supabase.from('resume_submissions').insert([
+      {
+        nickname,
+        email,
+        discord_id: discordId || null,
+        preferred_feedback: preferredFeedback,
+        drive_link: fileUrl,
+      },
+    ]);
+
+    if (error) {
+      console.error('❌ Supabase insert error:', error.message);
+      return NextResponse.json({ error: 'Database insert failed' }, { status: 500 });
+    }
+
+    console.log('✅ Supabase insert successful:', data);
+
+    return NextResponse.json({ success: true, fileUrl, record: data });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error('❌ Upload error:', err.message);
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    } else {
+      console.error('❌ Upload error:', err);
+      return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    }
   }
 }

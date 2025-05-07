@@ -18,7 +18,7 @@ export default function SignupPage() {
   const [learn, setLearn] = useState('');
   const [email, setEmail] = useState('');
   const [privacy, setPrivacy] = useState(false);
-  const [language, setLanguage] = useState<'en' | 'tl'>('en');
+  const [, setLanguage] = useState<'en' | 'tl'>('en');
   const [emailValid, setEmailValid] = useState(true);
 
   const handleRoleChange = (newRole: 'mentor' | 'learner') => {
@@ -52,7 +52,7 @@ export default function SignupPage() {
     };
 
     try {
-      const { data, error } = await supabase.from('signups').insert([formData]);
+      const { error } = await supabase.from('signups').insert([formData]);
       if (error) throw error;
       alert('Form submitted successfully!');
     } catch (error) {
@@ -69,7 +69,7 @@ export default function SignupPage() {
           <LanguageToggle onLanguageChange={handleLanguageChange} />
         </div>
         <h1 className="text-2xl font-semibold mb-2 text-center pt-4">After School Study Club</h1>
-        <h2 className="text-l font-normal mb-6 text-center">Let's figure it out together. No homeworks!</h2>
+        <h2 className="text-l font-normal mb-6 text-center">Let&apos;s figure it out together. No homeworks!</h2>
 
         <RoleSelector onRoleChange={handleRoleChange} />
 

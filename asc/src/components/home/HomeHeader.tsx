@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from '../ui/ThemeToggle';
 
@@ -14,13 +15,17 @@ const HomeHeader: React.FC = () => {
       <div className="w-full mx-auto flex justify-between items-center px-6">
         {/* Logo */}
         <div className="text-xl font-bold text-[var(--color-black)] dark:text-[var(--color-white)]">
-          <a href="/">After School Study Club</a>
+          <Link href="/">
+            <span>After School Study Club</span>
+          </Link>
         </div>
 
         {/* Desktop Nav + Theme */}
         <div className="hidden md:flex items-center gap-6">
           <nav className="flex space-x-6 items-center">
-            <a href="/" className="text-lg text-[var(--color-black)] dark:text-[var(--color-white)] hover:text-[var(--color-teal)]">Home</a>
+            <Link href="/">
+              <span className="text-lg text-[var(--color-black)] dark:text-[var(--color-white)] hover:text-[var(--color-teal)]">Home</span>
+            </Link>
             <a href="#about" className="text-lg text-[var(--color-black)] dark:text-[var(--color-white)] hover:text-[var(--color-teal)]">About</a>
             <a href="#features" className="text-lg text-[var(--color-black)] dark:text-[var(--color-white)] hover:text-[var(--color-teal)]">Features</a>
             <a href="#signup" className="text-lg text-[var(--color-black)] dark:text-[var(--color-white)] hover:text-[var(--color-teal)]">Sign Up</a>
@@ -43,7 +48,9 @@ const HomeHeader: React.FC = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-[var(--color-white)] dark:bg-[var(--color-orange)] text-[var(--color-black)] dark:text-[var(--color-white)] py-4 px-6 space-y-4">
-          <a href="/" className="block text-lg hover:text-[var(--color-teal)]">Home</a>
+          <Link href="/">
+            <span className="block text-lg hover:text-[var(--color-teal)]">Home</span>
+          </Link>
           <a href="#about" className="block text-lg hover:text-[var(--color-teal)]">About</a>
           <a href="#features" className="block text-lg hover:text-[var(--color-teal)]">Features</a>
           <a href="#signup" className="block text-lg hover:text-[var(--color-teal)]">Sign Up</a>
