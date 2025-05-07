@@ -4,17 +4,17 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import ProgressBar from '@/components/ui/ProgressBar';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 export default function UploadForm() {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [discordId, setDiscordId] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const [feedbackMethod, setFeedbackMethod] = useState('email');
+  const [preferredFeedback, setPreferredFeedback] = useState('none');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -43,8 +43,8 @@ export default function UploadForm() {
     formData.append('nickname', nickname);
     formData.append('email', email);
     formData.append('discordId', discordId);
+    formData.append('preferredFeedback', preferredFeedback);
     formData.append('file', file);
-    formData.append('feedbackMethod', feedbackMethod);
 
     const res = await fetch('/api/upload-resume', {
       method: 'POST',
@@ -99,25 +99,25 @@ export default function UploadForm() {
       </div>
 
       <div>
-        <Label htmlFor="file">Upload Resume (.pdf, .doc, .docx)</Label>
-        <Input type="file" id="file" accept=".pdf,.doc,.docx" onChange={(e) => setFile(e.target.files?.[0] || null)} required />
-      </div>
-
-      <div>
-        <Label htmlFor="feedbackMethod">Preferred Additional Feedback Method</Label>
-        <Select value={feedbackMethod} onValueChange={setFeedbackMethod}>
-          <SelectTrigger id="feedbackMethod">
-            <SelectValue placeholder="Select a method" />
+        <Label htmlFor="preferredFeedback">Preferred Additional Feedback</Label>
+        <Select onValueChange={(value) => setPreferredFeedback(value)} defaultValue="email">
+          <SelectTrigger>
+            <SelectValue placeholder="Select feedback method" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="email">Email only</SelectItem>
-            <SelectItem value="discord">Discord call (subject to availability)</SelectItem>
-            <SelectItem value="google_meet">Google Meet (subject to availability)</SelectItem>
+            <SelectItem value="discord">Email + Discord Call</SelectItem>
+            <SelectItem value="gmeet">Email + Google Meet</SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          We will try our best to accommodate your request, but additional feedback depends on reviewer availability.
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          Discord and Google Meet options are subject to mentor&apos;s availability — but we&apos;ll try our best to make it happen!
         </p>
+      </div>
+
+      <div>
+        <Label htmlFor="file">Upload Resume (.pdf, .doc, .docx)</Label>
+        <Input type="file" id="file" accept=".pdf,.doc,.docx" onChange={(e) => setFile(e.target.files?.[0] || null)} required />
       </div>
 
       <div className="text-sm text-gray-600 dark:text-gray-400">
