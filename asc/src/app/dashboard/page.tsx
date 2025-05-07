@@ -14,11 +14,10 @@ export default async function DashboardPage() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // 💥 If middleware works, you don't need to block here
   return (
     <div className="p-4 space-y-4">
-      <h1 className="text-xl font-bold">Dashboard</h1>
-      <p>Welcome, {session?.user?.email ?? 'User'}</p>
+      <h1 className="text-xl font-bold">Admin Dashboard</h1>
+      <p>Welcome, {session?.user?.email} — you have admin access 🎉</p>
       <LogoutButton />
     </div>
   );

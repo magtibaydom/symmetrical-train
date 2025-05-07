@@ -4,12 +4,10 @@ import { useEffect, useState } from 'react';
 import { useSession } from '@/components/SessionProvider';
 import { createClient } from '@/lib/supabaseClient';
 import LogoutButton from '@/components/LogOutButton';
-import { useRouter } from 'next/navigation';
 
 export default function AdminPage() {
   const session = useSession();
   const supabase = createClient();
-  const router = useRouter();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {

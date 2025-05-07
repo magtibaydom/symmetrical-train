@@ -3,7 +3,6 @@
 import ProcessOverview from '@/components/upload-resume/ProcessOverview';
 import UploadForm from '@/components/upload-resume/UploadForm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ModeToggle } from '@/components/ui/ThemeToggle';
 import Navbar from '@/components/ui/PlatformNavBar';
 
 export default function ResumeUploadPage() {

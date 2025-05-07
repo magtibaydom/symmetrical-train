@@ -1,7 +1,5 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
 export default function ProcessOverview() {
   return (
       <div className="space-y-6 p-6 rounded-xl">
