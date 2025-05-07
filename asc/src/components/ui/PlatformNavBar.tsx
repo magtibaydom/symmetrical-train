@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
 export default function Navbar() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // TODO: replace with real auth
+  const [isAuthenticated] = useState(false); // TODO: replace with real auth
 
   return (
     <nav className="flex items-center justify-between px-6 py-4 shadow-md bg-background">
